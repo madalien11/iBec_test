@@ -24,9 +24,11 @@ class NewsProdRepository {
       http.Response response = await http.get(
           "https://newsapi.org/v2/everything?q=bitcoin&pageSize=$pageSize&page=$page&apiKey=$apiKey");
       if (response.statusCode == 200) {
-        //save json in local file
-        file.writeAsStringSync(response.body,
-            flush: true, mode: FileMode.write);
+        if (page == 1) {
+          //save json in local file
+          file.writeAsStringSync(response.body,
+              flush: true, mode: FileMode.write);
+        }
         return compute(parseNews, response.body);
       } else {
         throw Exception('fetch news ' + response.statusCode.toString());
